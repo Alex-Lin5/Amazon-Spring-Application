@@ -1,4 +1,6 @@
 *.docx
+auth.json
+
 
 HELP.md
 target/

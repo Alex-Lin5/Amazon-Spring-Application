@@ -25,5 +25,26 @@ pipeline {
                 }
             }
         }
+        stage('push docker image'){
+            steps{
+                script{
+//                     def props = readJSON file: './auth.json'
+//                     def username = props.username
+//                     def password = props.password
+//                     withCredentials([usernamePassword(credentialsId: 'DockerUsrPas', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+//                     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId:'DockerUsrPas', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
+                    withCredentials([usernamePassword(credentialsId: 'DockerUsrPas', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                        print USERNAME
+                        print PASSWORD
+                        bat 'echo $PASSWORD | docker login --username $USERNAME --password-stdin'
+//                         bat 'docker login -u ${USERNAME} -p ${PASSWORD} docker.io'
+                        bat 'docker push amazon/spring:latest'
+                    }
+//                     bat 'docker login -u ${username} -p ${password} docker.io'
+                    bat 'docker login'
+                    bat 'docker push amazon/spring:latest'
+                }
+            }
+        }
     }
 }
