@@ -1,0 +1,47 @@
+version: '3'
+services:
+  # mysql -u root -p
+  # enter password:
+  mysql:
+    container_name: onlineShopping-mysql8
+    restart: on-failure
+    image: mysql:8.4
+    environment:
+      - MYSQL_ROOT_PASSWORD=root1234
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql:/var/lib/mysql
+#    networks:
+#      - backend
+
+  app:
+    container_name: onlineshopping-app
+    restart: on-failure
+    image: amazon/onlineshopping:1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      mysql:
+        condition: service_started
+    environment:
+      - 'DB_HOST=localhost:3306'
+      - 'DB_NAME=onlineshopping'
+      - 'DB_PASSWORD=root1234'
+      - 'DB_USERNAME=root'
+      - 'DOCKER_DNS=host.docker.internal'
+    ports:
+      - 9000:9000
+#    command: sleep infinity
+#    extra_hosts:
+#      - "host.docker.internal:host-gateway"
+    network_mode: host
+#    networks:
+#      - backend
+
+networks:
+  backend:
+#    name: backend
+    driver: host
+

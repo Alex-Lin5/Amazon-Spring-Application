@@ -1,6 +1,6 @@
 *.docx
 auth.json
-
+mysql/
 
 HELP.md
 target/

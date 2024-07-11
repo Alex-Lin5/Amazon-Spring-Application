@@ -21,7 +21,7 @@ pipeline {
         stage('build docker image'){
             steps{
                 script{
-                    bat 'docker build -t amazon/spring:latest .'
+                    bat 'docker build -t amazon/onlineshopping:1.0 .'
                 }
             }
         }
@@ -38,11 +38,11 @@ pipeline {
                         print PASSWORD
                         bat 'echo $PASSWORD | docker login --username $USERNAME --password-stdin'
 //                         bat 'docker login -u ${USERNAME} -p ${PASSWORD} docker.io'
-                        bat 'docker push amazon/spring:latest'
+                        bat 'docker push amazon/onlineshopping:1.0'
                     }
 //                     bat 'docker login -u ${username} -p ${password} docker.io'
-                    bat 'docker login'
-                    bat 'docker push amazon/spring:latest'
+//                     bat 'docker login'
+//                     bat 'docker push amazon/onlineshopping:1.0'
                 }
             }
         }
