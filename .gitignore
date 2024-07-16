@@ -1,5 +1,6 @@
 *.docx
 auth.json
+*secret*
 mysql/
 
 HELP.md

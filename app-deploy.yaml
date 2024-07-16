@@ -1,43 +1,59 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: onlineshopping-crud-deployment
+  name: onlineshopping-deploy
+  labels:
+    app: onlineshopping
 spec:
   selector:
     matchLabels:
-      app: onlineshopping-k8s-mysql
+      app: onlineshopping
   replicas: 3
   template:
     metadata:
       labels:
-        app: onlineshopping-k8s-mysql
+        app: onlineshopping
     spec:
       containers:
-        - name: onlineshopping-crud-k8s
-          image: amazon/onlineshopping:1.0
+        - name: onlineshopping-container
+          image: tank73/onlineshopping:h1.0  # amazon/onlineshopping:1.0
           ports:
             - containerPort: 9000
           env:   # Setting Enviornmental Variables
             - name: DB_HOST   # Setting Database host address from configMap
-              value : mysql
+              value : mysql-svc:3306
+#              value : my.database.host:3306
             - name: DB_NAME  # Setting Database name from configMap
               value : onlineshopping
             - name: DB_USERNAME  # Setting Database username from Secret
               value : root
             - name: DB_PASSWORD # Setting Database password from Secret
-              value : root1234
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: password
 
 ---
-
 apiVersion: v1 # Kubernetes API version
 kind: Service # Kubernetes resource kind we are creating
 metadata: # Metadata of the resource kind we are creating
-  name: onlineshopping-crud-svc
+  name: onlineshopping-svc
 spec:
   selector:
-    app: onlineshopping-k8s-mysql
+    app: onlineshopping
   ports:
-    - protocol: "TCP"
+    - protocol: TCP
       port: 9000 # The port that the service is running on in the cluster
       targetPort: 9000 # The port exposed by the service
   type: LoadBalancer # type of the service.
+#---
+#apiVersion: v1
+#kind: Pod
+#metadata:
+#  name: private-reg
+#spec:
+#  containers:
+#    - name: private-reg-container
+#      image: tank73/onlineshopping:h1.0
+#  imagePullSecrets:
+#    - name: docker-cred
