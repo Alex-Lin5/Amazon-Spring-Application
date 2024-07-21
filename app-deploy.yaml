@@ -20,13 +20,21 @@ spec:
           ports:
             - containerPort: 9000
           env:   # Setting Enviornmental Variables
-            - name: DB_HOST   # Setting Database host address from configMap
-              value : mysql-svc:3306
-#              value : my.database.host:3306
-            - name: DB_NAME  # Setting Database name from configMap
-              value : onlineshopping
+            - name: DB_HOST   # Setting Database host address from configmap
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-configmap
+                  key: host
+            - name: DB_NAME  # Setting Database name from configmap
+              valueFrom:
+                configMapKeyRef:
+                  name: mysql-configmap
+                  key: name
             - name: DB_USERNAME  # Setting Database username from Secret
-              value : root
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: user
             - name: DB_PASSWORD # Setting Database password from Secret
               valueFrom:
                 secretKeyRef:

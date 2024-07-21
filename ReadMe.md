@@ -3,7 +3,8 @@ This is a backend project in Spring boot framework that implements online shoppi
 
 ## Feature
 - 
-
+## Kubernetes
+spring boot application cannot communicate to database via JDBC in minikube, but curl command between pods is available
 
 ## Docker
 Host machine in Mac/Windows cannot communicate to docker container in host mode
