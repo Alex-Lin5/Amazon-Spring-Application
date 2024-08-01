@@ -28,6 +28,7 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<start-class>com.revature.AmazonSpringApp.AmazonSpringAppApplication</start-class>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -55,13 +56,131 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
+			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin -->
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.4.2</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<mainClass>${start-class}</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.13.0</version>
+				<configuration>
+					<source>11</source>
+					<target>11</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+<!--				<version>3.2.1</version>-->
+				<dependencies>
+					<dependency>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<version>3.3.1</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<transformers>
+						<transformer
+								implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+							<resource>META-INF/spring.handlers</resource>
+						</transformer>
+						<transformer
+								implementation="org.springframework.boot.maven.PropertiesMergingResourceTransformer">
+							<resource>META-INF/spring.factories</resource>
+						</transformer>
+						<transformer
+								implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+							<resource>META-INF/spring.schemas</resource>
+						</transformer>
+						<transformer
+								implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+<!--						<transformer-->
+<!--								implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
+<!--							<mainClass>${start-class}</mainClass>-->
+<!--						</transformer>-->
+					</transformers>
+					<filters>
+						<filter>
+							<artifact>*:*</artifact>
+							<excludes>
+								<exclude>META-INF/*.SF</exclude>
+								<exclude>META-INF/*.DSA</exclude>
+								<exclude>META-INF/*.RSA</exclude>
+							</excludes>
+						</filter>
+					</filters>
+				</configuration>
+				<executions>
+					<execution>
+						<id>shade-jar-with-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!--    test coverage report generation tool jacoco-->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.12</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.2.5</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.surefire</groupId>
+						<artifactId>surefire-junit-platform</artifactId>
+						<version>3.2.5</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<parallel>methods</parallel>
+					<threadCount>10</threadCount>
+					<includes>
+						<include>**/Test*.java</include>
+						<include>**/IntegrationTest*.java</include>
+						<include>**/TestAPIs*.java</include>
+						<!--            <include>**/*Runner.java</include>-->
+					</includes>
+					<excludes>
+						<exclude>**/*Abstract*Test.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
 		</plugins>
 		<finalName>AmazonSpringApplication</finalName>
 	</build>

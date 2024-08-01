@@ -1,9 +1,6 @@
 package com.revature.AmazonSpringApp.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -16,6 +13,8 @@ public class Profile {
     private String imageLink;
     private String description;
     private String preference;
-
+    @OneToOne
+    @JoinColumn(name = "userId")
+    private User userId;
 
 }

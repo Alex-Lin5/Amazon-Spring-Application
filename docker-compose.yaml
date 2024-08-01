@@ -2,18 +2,24 @@ version: '3'
 services:
   # mysql -u root -p
   # enter password:
+#    networks:
+#      - backend
   mysql:
     container_name: onlineShopping-mysql8
     restart: on-failure
     image: mysql:8.4
     environment:
+#      - MYSQL-USER=root
       - MYSQL_ROOT_PASSWORD=root1234
+      - MYSQL_DATABASE=onlineshopping
     ports:
       - 3306:3306
     volumes:
       - ./mysql:/var/lib/mysql
-#    networks:
-#      - backend
+#      - ./dbSetup.sql:/data/dbSetup.sql
+      - ./dbSetup.sql:/docker-entrypoint-initdb.d/dbSetup.sql
+#    command: >
+#      mysql -u root -p$MYSQL_ROOT_PASSWORD $MYSQL_DATABASE < /docker-entrypoint-initdb.d/dbSetup.sql
 
   app:
     container_name: onlineshopping-app

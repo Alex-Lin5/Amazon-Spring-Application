@@ -15,7 +15,9 @@ public class Cart {
     @OneToMany
     private List<Product> products;
     private String payment;
-    private int userId;
+    @OneToOne
+    @JoinColumn(name = "userId")
+    private User userId;
 
     public int getId() {
         return id;
@@ -37,11 +39,11 @@ public class Cart {
         this.payment = payment;
     }
 
-    public int getUserId() {
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 
