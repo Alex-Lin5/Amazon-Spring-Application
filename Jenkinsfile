@@ -42,19 +42,22 @@ pipeline {
         }
       }
     }
-    stage('authenticate kubernetes'){
+    stage('container registry on kubernetes cluster'){
       steps{
         script{
           sh 'minikube start'
-
-        }
-      }
-    }
-    stage('upload images or container registry on kubernetes cluster'){
-      steps{
-        script{
-          sh ''
-
+          // aws ecr, elastic container registry
+//           sh 'aws configure'
+//           sh 'aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 905418235901.dkr.ecr.us-east-2.amazonaws.com'
+//           sh 'docker image tag amazon/onlineshopping:1.0 905418235901.dkr.ecr.us-east-2.amazonaws.com/onlineshopping:latest'
+//           sh 'docker push 905418235901.dkr.ecr.us-east-2.amazonaws.com/onlineshopping:latest'
+          // eksctl installation
+//           sh 'PLATFORM=$(uname -s)_arm64'
+//           sh 'curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"'
+//           sh 'tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz'
+//           sh 'sudo mv /tmp/eksctl /usr/local/bin'
+          // add aws cluster to minikube
+//           sh 'aws eks --region us-east-2 update-kubeconfig --name onlineshopping'
         }
       }
     }

@@ -3,8 +3,9 @@ kind : ConfigMap
 metadata:
   name : mysql-configmap
 data:
-  host: mysql-svc:3306
-#  host: my.database.host:3306
+#  host: mysql-svc:3306
+  host: database-mysql.crqw4iao0q1a.us-east-2.rds.amazonaws.com:3306 # aws rds address
+#  host: my.database.host:3306 # external name of mysql service
 #  host: 10.244.0.131:3306 # pod IP
 #  host: 10.109.201.118:3306 # mysql-svc DNS address
   name: onlineshopping
