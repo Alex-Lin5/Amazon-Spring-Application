@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: onlineshopping-container
-#          image: tank73/onlineshopping:h1.0
-          image: 905418235901.dkr.ecr.us-east-2.amazonaws.com/onlineshopping
+          image: tank73/onlineshopping:h1.0
+#          image: 905418235901.dkr.ecr.us-east-2.amazonaws.com/onlineshopping
           ports:
             - containerPort: 9000
           env:   # Setting Enviornmental Variables
