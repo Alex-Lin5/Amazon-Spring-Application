@@ -4,7 +4,10 @@ import com.revature.AmazonSpringApp.entity.Cart;
 import com.revature.AmazonSpringApp.entity.Product;
 import com.revature.AmazonSpringApp.entity.Profile;
 import com.revature.AmazonSpringApp.entity.User;
+import com.revature.AmazonSpringApp.exceptions.AuthenticationException;
+import com.revature.AmazonSpringApp.exceptions.ProfileException;
 import com.revature.AmazonSpringApp.service.ProductServiceInterface;
+import com.revature.AmazonSpringApp.service.ProfileServiceInterface;
 import com.revature.AmazonSpringApp.service.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +24,8 @@ public class UserController implements UserControllerInterface{
 //    private ProductServiceInterface productService;
     @Autowired
     private UserServiceInterface userService;
+    @Autowired
+    private ProfileServiceInterface profileService;
 
     @Override
     public Cart getCart() {
@@ -49,7 +54,11 @@ public class UserController implements UserControllerInterface{
 
     @Override
     public Profile createProfile(Profile profile) {
-        return null;
+        Profile profileReturned = profileService.createProfile(profile);
+        if(profileReturned == null){
+            throw new ProfileException("Profile creation failed.");
+        }
+        return profileReturned;
     }
 
     @Override
@@ -80,8 +89,10 @@ public class UserController implements UserControllerInterface{
     @Override
     @PostMapping(value = "login")
     public ResponseEntity<String> login(@RequestBody User user) {
-        if(userService.login(user) == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Login Failed.");
+        if(userService.login(user) == null){
+            throw new AuthenticationException("Login Failed.");
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Login Failed.");
+        }
         return ResponseEntity.status(HttpStatus.OK).body("Login Success.");
     }
 

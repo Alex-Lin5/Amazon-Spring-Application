@@ -79,23 +79,4 @@ public class UserService implements UserServiceInterface{
         return null;
     }
 
-    @Override
-    public Profile getProfile() {
-        return null;
-    }
-
-    @Override
-    public Profile editProfile() {
-        return null;
-    }
-
-    @Override
-    public Profile createProfile() {
-        return null;
-    }
-
-    @Override
-    public Profile removeProfile() {
-        return null;
-    }
 }

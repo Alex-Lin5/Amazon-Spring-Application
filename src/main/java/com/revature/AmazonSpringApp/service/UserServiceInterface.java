@@ -13,8 +13,4 @@ public interface UserServiceInterface {
     void unblock(User user);
 
     Cart getCart(User user);
-    Profile getProfile();
-    Profile editProfile();
-    Profile createProfile();
-    Profile removeProfile();
 }
