@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface UserControllerInterface {
     Cart getCart();
-    void addToCart(Product p);
+    void addToCart(Cart c, Product p);
     void removeFromCart(Product p);
     void checkout();
     void payment();

@@ -24,6 +24,13 @@ public class User {
     private String otp;
     private String token;
     private boolean isAdmin;
+    public User(){}
+    public User(int id, String email, String password, boolean isAdmin){
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.isAdmin = isAdmin;
+    }
 
     public Cart getCartId() {
         return cartId;
@@ -77,7 +84,6 @@ public class User {
         isAdmin = admin;
     }
 
-    User(){}
     @Override
     public int hashCode(){
         return this.id;

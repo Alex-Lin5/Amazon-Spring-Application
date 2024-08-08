@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value="")
-public class Controller {
+public class HomeController {
     @GetMapping(value = "/")
     public ResponseEntity<String> Home(){
         return ResponseEntity.status(HttpStatus.OK).body("Home\n");

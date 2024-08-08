@@ -6,6 +6,7 @@ import com.revature.AmazonSpringApp.entity.Profile;
 import com.revature.AmazonSpringApp.entity.User;
 import com.revature.AmazonSpringApp.exceptions.AuthenticationException;
 import com.revature.AmazonSpringApp.exceptions.ProfileException;
+import com.revature.AmazonSpringApp.service.CartServiceInterface;
 import com.revature.AmazonSpringApp.service.ProductServiceInterface;
 import com.revature.AmazonSpringApp.service.ProfileServiceInterface;
 import com.revature.AmazonSpringApp.service.UserServiceInterface;
@@ -20,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "user")
 public class UserController implements UserControllerInterface{
-//    @Autowired
-//    private ProductServiceInterface productService;
+    @Autowired
+    private CartServiceInterface cartService;
     @Autowired
     private UserServiceInterface userService;
     @Autowired
@@ -33,8 +34,8 @@ public class UserController implements UserControllerInterface{
     }
 
     @Override
-    public void addToCart(Product p) {
-
+    public void addToCart(Cart c, Product p) {
+        cartService.addToCart(c, p);
     }
 
     @Override
@@ -53,6 +54,7 @@ public class UserController implements UserControllerInterface{
     }
 
     @Override
+    @PostMapping(value = "createProfile")
     public Profile createProfile(Profile profile) {
         Profile profileReturned = profileService.createProfile(profile);
         if(profileReturned == null){

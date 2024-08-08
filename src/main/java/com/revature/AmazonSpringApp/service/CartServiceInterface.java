@@ -9,7 +9,7 @@ import java.util.List;
 public interface CartServiceInterface {
     User fromUser();
     List<Product> getProductsInCart(Cart cart);
-    void adcToCart(Cart cart, Product product);
+    void addToCart(Cart cart, Product product);
     void removeFromCart(Cart cart, Product product);
     void checkout();
     void payment();
