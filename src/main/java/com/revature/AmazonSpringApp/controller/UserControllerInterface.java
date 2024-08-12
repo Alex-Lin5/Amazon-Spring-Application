@@ -5,11 +5,15 @@ import com.revature.AmazonSpringApp.entity.Product;
 import com.revature.AmazonSpringApp.entity.Profile;
 import com.revature.AmazonSpringApp.entity.User;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 public interface UserControllerInterface {
-    Cart getCart();
-    void addToCart(Cart c, Product p);
+    ResponseEntity<Cart> getCart(int userId);
+    ResponseEntity<String> addProduct(int cartId, Product p);
     void removeFromCart(Product p);
     void checkout();
     void payment();

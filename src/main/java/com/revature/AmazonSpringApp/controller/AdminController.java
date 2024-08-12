@@ -3,6 +3,7 @@ package com.revature.AmazonSpringApp.controller;
 import com.revature.AmazonSpringApp.entity.Product;
 import com.revature.AmazonSpringApp.entity.User;
 import com.revature.AmazonSpringApp.service.ProductServiceInterface;
+import com.revature.AmazonSpringApp.service.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,8 @@ import java.util.List;
 public class AdminController implements AdminControllerInterface {
     @Autowired
     ProductServiceInterface productService;
+    @Autowired
+    UserServiceInterface userService;
 
     @Override
     @GetMapping(value = "getAll")

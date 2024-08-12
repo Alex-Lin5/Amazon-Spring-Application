@@ -3,6 +3,8 @@ package com.revature.AmazonSpringApp.unit.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.revature.AmazonSpringApp.controller.UserController;
+import com.revature.AmazonSpringApp.entity.Cart;
+import com.revature.AmazonSpringApp.entity.Product;
 import com.revature.AmazonSpringApp.entity.User;
 import com.revature.AmazonSpringApp.service.CartService;
 import com.revature.AmazonSpringApp.service.ProfileService;
@@ -18,6 +20,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.hamcrest.Matchers.*;
+import static org.mockito.ArgumentMatchers.isNotNull;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -69,6 +72,65 @@ public class TestUserController {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(MockMvcResultMatchers.content().string(""));
+    }
+
+    @Test
+    void userAddProductToCartSuccess() throws Exception{
+        Product product = new Product(1, "TV", "27 inch", 500);
+        Cart cart = new Cart(1);
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String sentJson = ow.writeValueAsString(product);
+        when(cartService.addProduct(cart, product)).thenReturn("Success");
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .post("/user/addProduct/1")
+                        .content(sentJson)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(containsString("Success")));
+
+    }
+    @Test
+    void userAddProductToCartFail() throws Exception{
+        Product product = new Product(1, "TV", "27 inch", 500);
+        Cart cart = new Cart(1);
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String sentJson = ow.writeValueAsString(product);
+        when(cartService.addProduct(cart, product)).thenReturn("fails");
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .post("/user/addProduct/1")
+                        .content(sentJson)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().string(containsString("fail")));
+
+    }
+
+    @Test
+    void userGetCartSuccess() throws Exception{
+        User user = new User(1);
+        Cart cart = new Cart(1);
+        when(userService.getCart(user)).thenReturn(cart);
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .get("/user/1/getCart")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(notNullValue()));
+
+    }
+    @Test
+    void userGetCartFail() throws Exception{
+        User user = new User(1, "user@test.com", null, false);
+        when(userService.getCart(user)).thenReturn(null);
+        this.mockMvc.perform(MockMvcRequestBuilders
+                        .get("/user/1/getCart")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().string(""));
+
     }
 
 }

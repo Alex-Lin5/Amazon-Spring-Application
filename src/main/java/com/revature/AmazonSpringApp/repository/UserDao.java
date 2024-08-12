@@ -8,5 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface UserDao extends JpaRepository<User, Integer> {
+    // query creation from method name
     Optional<User> findByEmail(String email);
 }

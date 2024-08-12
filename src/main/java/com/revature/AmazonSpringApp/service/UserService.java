@@ -75,8 +75,7 @@ public class UserService implements UserServiceInterface{
 
     @Override
     public Cart getCart(User user) {
-//        return cartDao.findCart(user.getCartId().getId());
-        return null;
+        Optional<Cart> cartFound = cartDao.findByUserId(user.getId());
+        return cartFound.orElse(null);
     }
-
 }

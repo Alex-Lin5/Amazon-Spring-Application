@@ -21,6 +21,14 @@ public class Product {
     private float price;
     private Date onSale;
 
+    public Product(){}
+    public Product(int id, String name, String description, float price){
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
+
     public int getId() {
         return id;
     }

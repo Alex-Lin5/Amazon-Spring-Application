@@ -25,6 +25,7 @@ public class User {
     private String token;
     private boolean isAdmin;
     public User(){}
+    public User(int id) {this.id = id;}
     public User(int id, String email, String password, boolean isAdmin){
         this.id = id;
         this.email = email;

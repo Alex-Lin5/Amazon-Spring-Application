@@ -19,6 +19,9 @@ public class Cart {
     @JoinColumn(name = "userId")
     private User userId;
 
+    public Cart(){}
+    public Cart(int id){this.id = id;}
+
     public int getId() {
         return id;
     }

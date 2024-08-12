@@ -6,17 +6,12 @@ import com.revature.AmazonSpringApp.entity.Profile;
 import com.revature.AmazonSpringApp.entity.User;
 import com.revature.AmazonSpringApp.exceptions.AuthenticationException;
 import com.revature.AmazonSpringApp.exceptions.ProfileException;
-import com.revature.AmazonSpringApp.service.CartServiceInterface;
-import com.revature.AmazonSpringApp.service.ProductServiceInterface;
-import com.revature.AmazonSpringApp.service.ProfileServiceInterface;
-import com.revature.AmazonSpringApp.service.UserServiceInterface;
+import com.revature.AmazonSpringApp.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "user")
@@ -29,13 +24,24 @@ public class UserController implements UserControllerInterface{
     private ProfileServiceInterface profileService;
 
     @Override
-    public Cart getCart() {
-        return null;
+    @GetMapping(value = "{userId}/getCart")
+    public ResponseEntity<Cart> getCart(@PathVariable("userId") int userId) {
+        User user = new User(userId);
+        Cart cart = userService.getCart(user);
+        if(cart == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(cart);
     }
 
     @Override
-    public void addToCart(Cart c, Product p) {
-        cartService.addToCart(c, p);
+    @PostMapping(value = "addProduct/{cartId}")
+    public ResponseEntity<String> addProduct(@PathVariable("cartId") int cartId, @RequestBody @Validated Product p) {
+        Cart cart = new Cart(cartId);
+        String result = cartService.addProduct(cart, p);
+        if(result.contains("success"))
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
     }
 
     @Override
@@ -55,7 +61,7 @@ public class UserController implements UserControllerInterface{
 
     @Override
     @PostMapping(value = "createProfile")
-    public Profile createProfile(Profile profile) {
+    public Profile createProfile(@Validated @RequestBody Profile profile) {
         Profile profileReturned = profileService.createProfile(profile);
         if(profileReturned == null){
             throw new ProfileException("Profile creation failed.");

@@ -1,3 +1,6 @@
+## Spring Boot
+- Jpa query methods
+  https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html
 ## Kubernetes
 - `minikube start`, start cluster in local machine
 - `kubectl apply -f *.yaml`, run config for deploy and service
@@ -5,7 +8,7 @@
 
 ### AWS resources
 - aws eks ctl 
-https://eksctl.io/installation/
+  https://eksctl.io/installation/
 - aws eks getting started 
   https://docs.aws.amazon.com/eks/latest/userguide/getting-started-eksctl.html
 - 
